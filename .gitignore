@@ -16,4 +16,4 @@ __pycache__
 .venv/
 
 # Runtime logs
-chat_ui_builder/logs/
+logs/

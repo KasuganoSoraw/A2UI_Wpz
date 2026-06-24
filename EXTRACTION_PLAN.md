@@ -6,8 +6,9 @@
 
 ## 保留内容
 
-- `chat_ui_builder/` 后端源码与测试
-- `chat_ui_builder/uv.lock` 依赖锁文件
+- `src/chat_ui_builder/` 后端源码
+- `tests/` 后端测试
+- `uv.lock` 依赖锁文件
 - 根目录 `README.md`
 - 根目录 `.gitignore`
 - 根目录 `LICENSE`
@@ -25,8 +26,8 @@
 
 ## 验证要求
 
-1. 使用 `uv sync --project chat_ui_builder` 安装锁定依赖。
+1. 在仓库根目录使用 `uv sync` 安装锁定依赖。
 2. 运行后端测试，并单独记录已有失败。
 3. 在不持久化 API Key 的情况下启动 FastAPI 服务。
 4. 验证 `GET /health`。
-5. 确认后端不再引用 `chat_ui_builder/` 之外的上游代码。
+5. 确认后端不再引用本仓库之外的上游代码。

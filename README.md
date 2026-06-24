@@ -17,8 +17,7 @@
 在 PowerShell 中执行：
 
 ```powershell
-cd chat_ui_builder
-uv sync --project .
+uv sync
 
 $env:OPENAI_API_BASE = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 $env:OPENAI_API_KEY = "<你的 API Key>"
@@ -42,6 +41,5 @@ HTTP 流式接口返回 `application/x-ndjson`。
 ## 测试
 
 ```powershell
-cd chat_ui_builder
 uv run --with pytest pytest -q
 ```
