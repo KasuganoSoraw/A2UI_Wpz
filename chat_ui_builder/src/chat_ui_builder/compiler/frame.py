@@ -5,7 +5,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
-from models import (
+from chat_ui_builder.planning.models import (
     A2UIFrame,
     AddDividerDelta,
     AddImageDelta,

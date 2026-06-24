@@ -5,8 +5,13 @@ import logging
 from dataclasses import dataclass, field
 from typing import Callable
 
-from compiler import FrameCompiler
-from models import (
+from chat_ui_builder.compiler.frame import FrameCompiler
+from chat_ui_builder.compiler.region_archetypes import (
+    ArrangementSemantics,
+    RegionArchetypeRegistry,
+    RegionBuildContext,
+)
+from chat_ui_builder.planning.models import (
     A2UIFrame,
     AddDividerDelta,
     AddImageDelta,
@@ -33,7 +38,6 @@ from models import (
     InitPlanDelta,
     InitSurfaceDelta,
 )
-from region_archetypes import ArrangementSemantics, RegionArchetypeRegistry, RegionBuildContext
 
 logger = logging.getLogger(__name__)
 

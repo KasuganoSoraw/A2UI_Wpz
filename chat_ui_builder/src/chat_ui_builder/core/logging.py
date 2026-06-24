@@ -112,7 +112,7 @@ def configure_logging(log_level: int) -> None:
   if getattr(root_logger, _CONFIGURED_FLAG, False):
     return
 
-  base_dir = Path(__file__).resolve().parent
+  base_dir = Path(__file__).resolve().parents[3]
   log_dir = ensure_log_dir(base_dir)
   log_path = log_dir / LOG_FILE_NAME
 

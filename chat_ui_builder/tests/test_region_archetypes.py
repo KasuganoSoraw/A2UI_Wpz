@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import pytest
 
-from models import (
+from chat_ui_builder.planning.models import (
     AddRegionDelta,
     AddRegionFactDelta,
     AddRegionLineChartDelta,
@@ -15,7 +15,7 @@ from models import (
     AddRegionListItemDelta,
     SKELETON_DELTA_ADAPTER,
 )
-from skeleton_compiler import SkeletonCompiler
+from chat_ui_builder.compiler.skeleton import SkeletonCompiler
 
 
 def _slot_component_ids(frames: list[object]) -> set[str]:

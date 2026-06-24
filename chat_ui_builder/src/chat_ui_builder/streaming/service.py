@@ -8,8 +8,9 @@ from typing import Any, Literal
 from litellm import acompletion
 from pydantic import BaseModel, Field
 
-from settings import settings
-from streaming.models import (
+from chat_ui_builder.core.settings import settings
+from chat_ui_builder.streaming.compiler import StreamCompiler
+from chat_ui_builder.streaming.models import (
     STREAM_EVENT_ADAPTER,
     CreateFactsBlockEvent,
     CreateListBlockEvent,
@@ -20,8 +21,7 @@ from streaming.models import (
     SetFinalSummaryTextEvent,
     StreamEvent,
 )
-from streaming.prompt import build_stream_event_messages
-from streaming.stream_compiler import StreamCompiler
+from chat_ui_builder.streaming.prompting import build_stream_event_messages
 
 logger = logging.getLogger(__name__)
 

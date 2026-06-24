@@ -7,12 +7,12 @@ from typing import Any
 
 from litellm import acompletion
 
-from compiler import FrameCompiler
-from models import A2UIFrame, AddTextDelta, InitSurfaceDelta
-from planning_stream import PlanningDeltaRecord, PlanningDeltaStreamParser
-from prompting import build_messages
-from skeleton_compiler import SkeletonCompiler
-from settings import settings
+from chat_ui_builder.compiler.frame import FrameCompiler
+from chat_ui_builder.compiler.skeleton import SkeletonCompiler
+from chat_ui_builder.core.settings import settings
+from chat_ui_builder.planning.models import A2UIFrame, AddTextDelta, InitSurfaceDelta
+from chat_ui_builder.planning.parser import PlanningDeltaRecord, PlanningDeltaStreamParser
+from chat_ui_builder.planning.prompting import build_messages
 
 logger = logging.getLogger(__name__)
 

@@ -7,27 +7,15 @@ from uuid import uuid4
 from fastapi import FastAPI, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, model_validator
 
-from logging_utils import configure_logging
-from service import ChatUIService
-from settings import settings
-from streaming.runtime import StreamingRuntime
+from chat_ui_builder.api.schemas import ChatRequest
+from chat_ui_builder.core.logging import configure_logging
+from chat_ui_builder.core.settings import settings
+from chat_ui_builder.planning.service import ChatUIService
+from chat_ui_builder.streaming.runtime import StreamingRuntime
 
 configure_logging(getattr(logging, settings.log_level, logging.INFO))
 logger = logging.getLogger(__name__)
-
-
-class ChatRequest(BaseModel):
-  message: str | None = None
-  source_data: dict | list | str | int | float | bool | None = None
-  user_query: str | None = None
-
-  @model_validator(mode='after')
-  def ensure_non_empty_request(self) -> 'ChatRequest':
-    if self.source_data is None and not self.message:
-      raise ValueError('`source_data` 或 `message` 至少提供一个。')
-    return self
 
 
 app = FastAPI(title='A2UI Chat UI Builder')

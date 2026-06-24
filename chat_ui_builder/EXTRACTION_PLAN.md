@@ -1,34 +1,32 @@
-# Chat UI Builder Repository Extraction Plan
+# Chat UI Builder 仓库抽离说明
 
-## Goal
+## 目标
 
-Reduce the upstream A2UI repository to the standalone Chat UI Builder Python
-backend while preserving reproducible installation and runtime behavior.
+将上游 A2UI 大仓精简为可独立运行的 Chat UI Builder Python 后端，同时保留可复现的依赖安装和运行方式。
 
-## Keep
+## 保留内容
 
-- `chat_ui_builder/` backend source and tests
-- `chat_ui_builder/uv.lock`
-- root `README.md`
-- root `.gitignore`
-- root `LICENSE`
-- Git metadata
+- `chat_ui_builder/` 后端源码与测试
+- `chat_ui_builder/uv.lock` 依赖锁文件
+- 根目录 `README.md`
+- 根目录 `.gitignore`
+- 根目录 `LICENSE`
+- Git 元数据
 
-## Remove
+## 已删除内容
 
-- renderer and frontend code
-- samples and agent SDKs
-- A2UI specification sources
-- repository tooling
-- upstream documentation and site configuration
-- upstream GitHub and Gemini configuration
-- generated runtime logs
+- Renderer 和前端代码
+- 示例与 Agent SDK
+- A2UI 规范源码
+- 原仓库工具
+- 上游文档与站点配置
+- 上游 GitHub 和 Gemini 配置
+- 运行时生成的日志
 
-## Verification
+## 验证要求
 
-1. Install locked dependencies with `uv sync --project chat_ui_builder`.
-2. Run the backend tests and record any pre-existing failures.
-3. Start the FastAPI service without persisting an API key.
-4. Verify `GET /health`.
-5. Confirm no backend import or file reference points outside
-   `chat_ui_builder/`.
+1. 使用 `uv sync --project chat_ui_builder` 安装锁定依赖。
+2. 运行后端测试，并单独记录已有失败。
+3. 在不持久化 API Key 的情况下启动 FastAPI 服务。
+4. 验证 `GET /health`。
+5. 确认后端不再引用 `chat_ui_builder/` 之外的上游代码。

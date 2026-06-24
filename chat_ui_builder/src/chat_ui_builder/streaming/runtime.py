@@ -7,9 +7,9 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from streaming.json_extractor import JsonExtractionResult, JsonExtractor
-from streaming.service import StreamingPromptService
-from streaming.stream_compiler import StreamCompiler
+from chat_ui_builder.streaming.compiler import StreamCompiler
+from chat_ui_builder.streaming.json_extractor import JsonExtractionResult, JsonExtractor
+from chat_ui_builder.streaming.service import StreamingPromptService
 
 logger = logging.getLogger(__name__)
 

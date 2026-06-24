@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 from pydantic import ValidationError
 
-from models import SKELETON_DELTA_ADAPTER, FinalizeDelta, SkeletonDelta
+from chat_ui_builder.planning.models import SKELETON_DELTA_ADAPTER, FinalizeDelta, SkeletonDelta
 
 
 @dataclass

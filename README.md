@@ -1,48 +1,47 @@
-# Chat UI Builder Backend
+# Chat UI Builder 后端
 
-This repository contains only the Python backend for Chat UI Builder.
+本仓库仅包含 Chat UI Builder 的 Python 后端。
 
-The service accepts source data and a user query, asks an OpenAI-compatible
-model to produce incremental planning events, and compiles those events into
-A2UI NDJSON frames.
+服务接收源数据和用户需求，通过 OpenAI-compatible 模型生成增量页面规划事件，
+再将其编译为 A2UI NDJSON 数据帧。
 
-## Requirements
+## 环境要求
 
 - Windows
-- Python 3.11 or newer
+- Python 3.11 或更高版本
 - `uv`
-- An OpenAI-compatible model endpoint
+- 可访问的 OpenAI-compatible 模型服务
 
-## Run with Alibaba Cloud Model Studio
+## 使用阿里云百炼运行
 
-Open PowerShell:
+在 PowerShell 中执行：
 
 ```powershell
 cd chat_ui_builder
 uv sync --project .
 
 $env:OPENAI_API_BASE = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-$env:OPENAI_API_KEY = "<your-api-key>"
+$env:OPENAI_API_KEY = "<你的 API Key>"
 $env:LOCAL_MODEL_NAME = "glm-5.1"
 $env:LITELLM_MODEL = "openai/glm-5.1"
 
-uv run --project . .
+uv run python -m chat_ui_builder
 ```
 
-The service listens on `http://localhost:8010` by default.
+服务默认监听 `http://localhost:8010`。
 
-## Endpoints
+## 接口
 
 - `GET /health`
 - `POST /api/chat/stream`
 - `WS /api/chat/ws/stream`
 - `WS /ws/debug`
 
-The HTTP streaming endpoint returns `application/x-ndjson`.
+HTTP 流式接口返回 `application/x-ndjson`。
 
-## Tests
+## 测试
 
 ```powershell
 cd chat_ui_builder
-uv run --project . --with pytest pytest -q
+uv run --with pytest pytest -q
 ```

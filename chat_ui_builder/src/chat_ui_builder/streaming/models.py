@@ -4,7 +4,7 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, TypeAdapter
 
-from models import TableColumnSpec
+from chat_ui_builder.planning.models import TableColumnSpec
 
 
 class TextLine(BaseModel):

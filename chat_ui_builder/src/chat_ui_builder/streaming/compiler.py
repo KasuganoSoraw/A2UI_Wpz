@@ -4,8 +4,8 @@ import json
 from dataclasses import dataclass
 from typing import Literal
 
-from compiler import FrameCompiler
-from models import (
+from chat_ui_builder.compiler.frame import FrameCompiler
+from chat_ui_builder.planning.models import (
     A2UIFrame,
     AddKeyValueDelta,
     AddSectionDelta,
@@ -16,7 +16,7 @@ from models import (
     TableColumnSpec,
     UpdateTableSpecDelta,
 )
-from streaming.models import (
+from chat_ui_builder.streaming.models import (
     AppendFactsEvent,
     AddListItemsEvent,
     AppendTableRowsEvent,

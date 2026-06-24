@@ -4,8 +4,8 @@ import asyncio
 import json
 from types import SimpleNamespace
 
-import service as service_module
-from service import ChatUIService
+import chat_ui_builder.planning.service as service_module
+from chat_ui_builder.planning.service import ChatUIService
 
 
 class FakeResponse:

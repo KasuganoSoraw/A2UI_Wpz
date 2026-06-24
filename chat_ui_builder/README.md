@@ -13,19 +13,20 @@
 
 ## 本地模型配置
 
-服务默认指向一个本地 OpenAI-compatible 端点：
+在 PowerShell 中配置 OpenAI-compatible 端点：
 
-```bash
-export OPENAI_API_BASE="http://10.50.95.196:8000/v1"
-export OPENAI_API_KEY="sk-1234"
-export LITELLM_MODEL="openai/qwen3.5"
+```powershell
+$env:OPENAI_API_BASE = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+$env:OPENAI_API_KEY = "<你的 API Key>"
+$env:LOCAL_MODEL_NAME = "glm-5.1"
+$env:LITELLM_MODEL = "openai/glm-5.1"
 ```
 
 可选日志参数：
 
-```bash
-export LOG_LEVEL="INFO"
-export MAX_LOG_CHARS="1200"
+```powershell
+$env:LOG_LEVEL = "INFO"
+$env:MAX_LOG_CHARS = "1200"
 ```
 
 后端会记录：
@@ -37,9 +38,10 @@ export MAX_LOG_CHARS="1200"
 
 ## 启动后端
 
-```bash
+```powershell
 cd chat_ui_builder
-uv run .
+uv sync --project .
+uv run python -m chat_ui_builder
 ```
 
 默认启动在 `http://localhost:8010`。

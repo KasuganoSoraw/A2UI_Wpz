@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Callable, Literal
 
-from models import A2UIFrame, AddRegionDelta, AddSectionDelta, AddTextDelta
+from chat_ui_builder.planning.models import A2UIFrame, AddRegionDelta, AddSectionDelta, AddTextDelta
 
 EmitLowLevel = Callable[[object], list[A2UIFrame]]
 
