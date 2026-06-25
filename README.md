@@ -18,13 +18,15 @@ A2UI/
 cd backend
 uv sync
 
-$env:OPENAI_API_BASE = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-$env:OPENAI_API_KEY = "<你的 API Key>"
-$env:LOCAL_MODEL_NAME = "glm-5.1"
-$env:LITELLM_MODEL = "openai/glm-5.1"
+Copy-Item config\models.example.yaml config\models.yaml
+# 编辑 config\models.yaml，填入本地模型配置和 API Key
 
 uv run python -m chat_ui_builder
 ```
+
+`config/models.yaml` 保存本机密钥且已被 Git 忽略；可提交的配置模板为
+`config/models.example.yaml`。默认模型为 `glm-5.1`，请求也可以通过
+`?model=<已配置模型名>` 选择其他模型。
 
 服务默认监听 `http://localhost:8010`，接口文档位于 `http://localhost:8010/docs`。
 

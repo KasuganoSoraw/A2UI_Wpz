@@ -8,7 +8,11 @@ from typing import Any, Literal
 from litellm import acompletion
 from pydantic import BaseModel, Field
 
-from chat_ui_builder.core.settings import settings
+from chat_ui_builder.core.model_config import (
+    ModelRegistry,
+    build_completion_kwargs,
+    model_registry as default_model_registry,
+)
 from chat_ui_builder.streaming.compiler import StreamCompiler
 from chat_ui_builder.streaming.models import (
     STREAM_EVENT_ADAPTER,
@@ -115,6 +119,9 @@ class StreamEventLineParser:
 class StreamingPromptService:
     """单阶段 streaming prompt 服务：一次调用直接输出 StreamEvent。"""
 
+    def __init__(self, model_registry: ModelRegistry | None = None) -> None:
+        self._model_registry = model_registry or default_model_registry
+
     async def stream_project_segment(
         self,
         payload: StreamingProjectionInput | dict[str, Any],
@@ -197,19 +204,9 @@ class StreamingPromptService:
     async def _stream_event_chunks(
         self, messages: list[dict[str, str]]
     ) -> AsyncIterator[str]:
-        response = await acompletion(
-            model=settings.litellm_model,
-            messages=messages,
-            api_base=settings.openai_api_base,
-            api_key=settings.openai_api_key,
-            stream=True,
-            temperature=settings.temperature,
-            extra_body={
-                "chat_template_kwargs": {
-                    "enable_thinking": False,
-                }
-            },
-        )
+        model_config = self._model_registry.resolve()
+        completion_kwargs = build_completion_kwargs(model_config, messages)
+        response = await acompletion(**completion_kwargs)
 
         async for chunk in response:
             content = self._extract_chunk_content(chunk)

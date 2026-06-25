@@ -19,12 +19,23 @@
 ```powershell
 uv sync
 
-$env:OPENAI_API_BASE = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-$env:OPENAI_API_KEY = "<你的 API Key>"
-$env:LOCAL_MODEL_NAME = "glm-5.1"
-$env:LITELLM_MODEL = "openai/glm-5.1"
+Copy-Item config\models.example.yaml config\models.yaml
+# 编辑 config\models.yaml，填入本地模型配置和 API Key
 
 uv run python -m chat_ui_builder
+```
+
+模型统一配置在 `config/models.yaml`。该文件包含本机密钥，已被 Git 忽略；
+`config/models.example.yaml` 是可提交的配置模板。
+
+配置文件通过 `default_model` 指定默认模型。调用
+`POST /api/chat/stream?model=glm-5.1` 可以选择任一已配置模型；省略
+`model` 时使用默认模型。请求未配置的模型会返回 HTTP 400。
+
+如需将配置放在其他位置，可设置绝对路径：
+
+```powershell
+$env:MODEL_CONFIG_PATH = "D:\configs\a2ui-models.yaml"
 ```
 
 服务默认监听 `http://localhost:8010`。
@@ -35,6 +46,7 @@ uv run python -m chat_ui_builder
 - Python interpreter：`<仓库目录>\backend\.venv\Scripts\python.exe`
 - Run：Module name
 - Module name：`chat_ui_builder`
+- Environment variables（可选）：`MODEL_CONFIG_PATH=<模型配置绝对路径>`
 
 ## 接口
 

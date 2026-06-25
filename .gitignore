@@ -5,6 +5,7 @@ dist
 .env
 .env.*
 !.env.example
+backend/config/models.yaml
 .idx
 .vscode
 .idea

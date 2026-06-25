@@ -1,0 +1,36 @@
+default_model: glm-5.1
+
+models:
+  glm-5.1:
+    litellm_model: openai/glm-5.1
+    api_base: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key: <你的百炼 API Key>
+    temperature: 0.2
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+  glm-5:
+    litellm_model: openai/glm-5
+    api_base: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key: <你的百炼 API Key>
+    temperature: 0.2
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+  deepseek-v4-flash:
+    litellm_model: deepseek/deepseek-v4-flash
+    api_base: https://api.deepseek.com
+    api_key: <你的 DeepSeek API Key>
+    temperature: 0.2
+    ssl_verify: false
+    aiohttp_trust_env: true
+
+  deepseek-v4-pro:
+    litellm_model: deepseek/deepseek-v4-pro
+    api_base: https://api.deepseek.com
+    api_key: <你的 DeepSeek API Key>
+    temperature: 0.2
+    ssl_verify: false
+    aiohttp_trust_env: true

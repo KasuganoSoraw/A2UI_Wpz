@@ -4,12 +4,13 @@ import json
 import logging
 from uuid import uuid4
 
-from fastapi import FastAPI, Query, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
 from chat_ui_builder.api.schemas import ChatRequest
 from chat_ui_builder.core.logging import configure_logging
+from chat_ui_builder.core.model_config import ModelNotFoundError
 from chat_ui_builder.core.settings import settings
 from chat_ui_builder.planning.service import ChatUIService
 from chat_ui_builder.streaming.runtime import StreamingRuntime
@@ -33,12 +34,13 @@ streaming_runtime = StreamingRuntime()
 
 @app.on_event("startup")
 async def startup_event() -> None:
+    model_config = service.resolve_model_config()
     logger.info(
         "Chat UI Builder startup. host=%s port=%s endpoint=%s model=%s log_level=%s",
         settings.host,
         settings.port,
-        settings.openai_api_base,
-        settings.litellm_model,
+        model_config.api_base,
+        model_config.litellm_model,
         settings.log_level,
     )
 
@@ -214,6 +216,10 @@ async def chat_stream(
         (payload.user_query or payload.message or "")[: settings.max_log_chars],
         str(payload.source_data)[: settings.max_log_chars],
     )
+    try:
+        service.resolve_model_config(model)
+    except ModelNotFoundError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     async def frame_stream():
         async for frame in service.stream_frames(
