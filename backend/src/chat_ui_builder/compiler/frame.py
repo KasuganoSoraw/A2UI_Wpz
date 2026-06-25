@@ -457,10 +457,11 @@ class FrameCompiler:
         parent = self._ensure_container(parent_id)
         item_index = self.list_item_counts.get(parent.component_id, 0) + 1
         self.list_item_counts[parent.component_id] = item_index
-        item_prefix = self._register_id(f"{delta.id}_{item_index}")
-        wrapper_id = self._helper_id(item_prefix, "wrapper")
-        title_id = self._helper_id(item_prefix, "title")
-        detail_id = self._helper_id(item_prefix, "detail")
+        item_key = f"{delta.id}_{item_index}"
+        component_prefix = self._register_id(item_key)
+        wrapper_id = self._helper_id(component_prefix, "wrapper")
+        title_id = self._helper_id(component_prefix, "title")
+        detail_id = self._helper_id(component_prefix, "detail")
 
         if wrapper_id == parent.component_id:
             raise ValueError(
@@ -470,9 +471,9 @@ class FrameCompiler:
         self._append_child(parent_id, wrapper_id)
         parent_update = self._container_component(parent)
         wrapper_children = [title_id] + ([detail_id] if delta.detail else [])
-        content_id = self._helper_id(item_prefix, "content")
+        content_id = self._helper_id(component_prefix, "content")
         timeline_card_id = (
-            self._helper_id(item_prefix, "card")
+            self._helper_id(component_prefix, "card")
             if parent.container_type == "Timeline"
             else None
         )
@@ -513,9 +514,7 @@ class FrameCompiler:
             id=title_id,
             component={
                 "Text": {
-                    "text": {
-                        "path": f"/lists/{parent.component_id}/{item_prefix}/title"
-                    },
+                    "text": {"path": f"/lists/{parent.component_id}/{item_key}/title"},
                     "usageHint": delta.title_usage_hint or "body",
                 }
             },
@@ -529,7 +528,7 @@ class FrameCompiler:
                     component={
                         "Text": {
                             "text": {
-                                "path": f"/lists/{parent.component_id}/{item_prefix}/detail"
+                                "path": f"/lists/{parent.component_id}/{item_key}/detail"
                             },
                             "usageHint": delta.detail_usage_hint or "caption",
                         }
@@ -539,5 +538,5 @@ class FrameCompiler:
             contents.append(DataMapEntry(key="detail", valueString=delta.detail))
         return [
             self._surface_update(components),
-            self._data_update(f"/lists/{parent.component_id}/{item_prefix}", contents),
+            self._data_update(f"/lists/{parent.component_id}/{item_key}", contents),
         ]
