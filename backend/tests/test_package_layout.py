@@ -10,6 +10,7 @@ def test_standard_package_modules_are_importable() -> None:
         "chat_ui_builder.api.schemas",
         "chat_ui_builder.core.logging",
         "chat_ui_builder.core.model_config",
+        "chat_ui_builder.core.project_paths",
         "chat_ui_builder.core.settings",
         "chat_ui_builder.planning.models",
         "chat_ui_builder.planning.parser",

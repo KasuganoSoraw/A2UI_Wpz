@@ -5,6 +5,8 @@ import os
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
+from chat_ui_builder.core.project_paths import PROJECT_ROOT
+
 
 LOG_DIR_NAME = "logs"
 LOG_FILE_NAME = "chat_ui_builder.log"
@@ -112,8 +114,7 @@ def configure_logging(log_level: int) -> None:
     if getattr(root_logger, _CONFIGURED_FLAG, False):
         return
 
-    base_dir = Path(__file__).resolve().parents[3]
-    log_dir = ensure_log_dir(base_dir)
+    log_dir = ensure_log_dir(PROJECT_ROOT)
     log_path = log_dir / LOG_FILE_NAME
 
     root_logger.setLevel(log_level)

@@ -7,10 +7,10 @@ from typing import Any
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, ValidationError
 
+from chat_ui_builder.core.project_paths import PROJECT_ROOT
 
-DEFAULT_MODEL_CONFIG_PATH = (
-    Path(__file__).resolve().parents[3] / "config" / "models.yaml"
-)
+
+DEFAULT_MODEL_CONFIG_PATH = PROJECT_ROOT / "config" / "models.yaml"
 
 
 class ModelConfigError(RuntimeError):
