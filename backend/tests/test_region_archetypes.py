@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import json
-import pytest
-
 from chat_ui_builder.planning.models import (
     AddRegionDelta,
     AddRegionFactDelta,
@@ -45,10 +43,10 @@ def test_summary_region_uses_compact_fact_strip_slots() -> None:
   binding = compiler.regions['summary_region']
   component_ids = _slot_component_ids(frames)
 
-  assert binding.parent_for('fact') == 'summary_region_fact_grid'
-  assert binding.parent_for('text') == 'summary_region_fact_grid'
-  assert 'summary_region_header' in component_ids
-  assert 'summary_region_fact_grid' in component_ids
+  assert binding.parent_for('fact') == 'summary_region_facts'
+  assert binding.parent_for('text') == 'summary_region_facts'
+  assert 'summary_region_header' not in component_ids
+  assert 'summary_region_facts' in component_ids
 
 
 def test_pending_region_deltas_flush_through_semantic_slot_mapping() -> None:
@@ -70,7 +68,7 @@ def test_pending_region_deltas_flush_through_semantic_slot_mapping() -> None:
 
   assert 'details_region_header' in component_ids
   assert 'details_region_body' in component_ids
-  assert 'details_region_fact_row' in component_ids
+  assert 'details_region_facts' in component_ids
   assert 'details_fact' in component_ids
 
 
@@ -345,47 +343,51 @@ def test_add_region_table_schema_accepts_object_cell_with_visual_weight() -> Non
   assert alarm_cell == {'value': '3', 'visual_weight': 4}
 
 
-def test_add_region_table_schema_rejects_object_cell_without_value() -> None:
-  with pytest.raises(Exception):
-    SKELETON_DELTA_ADAPTER.validate_python(
-        {
-            'event': 'add_region_table',
-            'id': 'risk_table',
-            'region_id': 'details_region',
-            'columns': [
-                {'key': 'alarmLevel', 'label': '告警等级'},
-            ],
-            'rows': [
-                {
-                    'alarmLevel': {
-                        'visual_weight': 4,
-                    }
-                },
-            ],
-        }
-    )
+def test_add_region_table_schema_preserves_object_cell_without_value() -> None:
+  parsed = SKELETON_DELTA_ADAPTER.validate_python(
+      {
+          'event': 'add_region_table',
+          'id': 'risk_table',
+          'region_id': 'details_region',
+          'columns': [
+              {'key': 'alarmLevel', 'label': '告警等级'},
+          ],
+          'rows': [
+              {
+                  'alarmLevel': {
+                      'visual_weight': 4,
+                  }
+              },
+          ],
+      }
+  )
+
+  assert isinstance(parsed, AddRegionTableDelta)
+  assert parsed.rows[0]['alarmLevel'] == {'visual_weight': 4}
 
 
-def test_add_region_table_schema_rejects_visual_weight_out_of_range() -> None:
-  with pytest.raises(Exception):
-    SKELETON_DELTA_ADAPTER.validate_python(
-        {
-            'event': 'add_region_table',
-            'id': 'risk_table',
-            'region_id': 'details_region',
-            'columns': [
-                {'key': 'alarmLevel', 'label': '告警等级'},
-            ],
-            'rows': [
-                {
-                    'alarmLevel': {
-                        'value': '3',
-                        'visual_weight': 8,
-                    }
-                },
-            ],
-        }
-    )
+def test_add_region_table_schema_preserves_visual_weight_out_of_range() -> None:
+  parsed = SKELETON_DELTA_ADAPTER.validate_python(
+      {
+          'event': 'add_region_table',
+          'id': 'risk_table',
+          'region_id': 'details_region',
+          'columns': [
+              {'key': 'alarmLevel', 'label': '告警等级'},
+          ],
+          'rows': [
+              {
+                  'alarmLevel': {
+                      'value': '3',
+                      'visual_weight': 8,
+                  }
+              },
+          ],
+      }
+  )
+
+  assert isinstance(parsed, AddRegionTableDelta)
+  assert parsed.rows[0]['alarmLevel'] == {'value': '3', 'visual_weight': 8}
 
 
 def test_add_region_table_routes_to_default_text_slot_and_emits_table_component() -> None:
@@ -659,25 +661,25 @@ def test_add_region_pie_chart_routes_and_emits_pie_chart_component() -> None:
   assert '"chartData"' in chart_spec_string
 
 
-def test_hero_fact_slot_container_emits_appearance_hero_fact() -> None:
+def test_hero_facts_container_emits_appearance_hero_fact() -> None:
   compiler = SkeletonCompiler()
   compiler.apply(InitPlanDelta(event='init_plan', title='Hero appearance page'))
 
   frames = compiler.apply(AddRegionDelta(event='add_region', id='hero_region', role='hero', title='概览'))
 
-  hero_fact_payload = None
+  hero_facts_payload = None
   for frame in frames:
     if not frame.surfaceUpdate:
       continue
     for component in frame.surfaceUpdate.components:
-      if component.id == 'hero_region_fact_row':
-        hero_fact_payload = component.component.get('Row')
+      if component.id == 'hero_region_facts':
+        hero_facts_payload = component.component.get('Row')
 
-  assert hero_fact_payload is not None
-  assert hero_fact_payload['appearance'] == 'hero_fact'
+  assert hero_facts_payload is not None
+  assert hero_facts_payload['appearance'] == 'hero_fact'
 
 
-def test_hero_fact_items_still_mount_under_fact_row_and_keep_text_usage_hints() -> None:
+def test_hero_fact_items_mount_under_facts_container_and_keep_text_usage_hints() -> None:
   compiler = SkeletonCompiler()
   compiler.apply(InitPlanDelta(event='init_plan', title='Hero facts page'))
   compiler.apply(AddRegionDelta(event='add_region', id='hero_region', role='hero', title='概览'))
@@ -692,22 +694,22 @@ def test_hero_fact_items_still_mount_under_fact_row_and_keep_text_usage_hints() 
       )
   )
 
-  hero_fact_row_children = None
+  hero_facts_children = None
   label_hint = None
   value_hint = None
   for frame in frames:
     if not frame.surfaceUpdate:
       continue
     for component in frame.surfaceUpdate.components:
-      if component.id == 'hero_region_fact_row':
-        hero_fact_row_children = component.component['Row']['children']['explicitList']
+      if component.id == 'hero_region_facts':
+        hero_facts_children = component.component['Row']['children']['explicitList']
       if component.id == 'fact_total__label':
         label_hint = component.component['Text']['usageHint']
       if component.id == 'fact_total__value':
         value_hint = component.component['Text']['usageHint']
 
-  assert hero_fact_row_children is not None
-  assert 'fact_total' in hero_fact_row_children
+  assert hero_facts_children is not None
+  assert 'fact_total' in hero_facts_children
   assert label_hint == 'caption'
   assert value_hint == 'body'
 
