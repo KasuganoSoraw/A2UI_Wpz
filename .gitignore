@@ -16,4 +16,4 @@ __pycache__
 .venv/
 
 # Runtime logs
-logs/
+backend/logs/

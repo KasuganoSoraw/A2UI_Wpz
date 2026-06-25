@@ -1,22 +1,21 @@
-# Chat UI Builder 后端
+# A2UI
 
-本仓库仅包含 Chat UI Builder 的 Python 后端。
+本仓库按前后端分离方式组织 Chat UI Builder：
 
-服务接收源数据和用户需求，通过 OpenAI-compatible 模型生成增量页面规划事件，
-再将其编译为 A2UI NDJSON 数据帧。
+```text
+A2UI/
+├── backend/   Python 后端
+└── frontend/  前端项目
+```
 
-## 环境要求
+## 后端
 
-- Windows
-- Python 3.11 或更高版本
-- `uv`
-- 可访问的 OpenAI-compatible 模型服务
+后端负责调用 OpenAI-compatible 模型，将源数据和用户需求转换为 A2UI NDJSON 数据帧。
 
-## 使用阿里云百炼运行
-
-在 PowerShell 中执行：
+在 PowerShell 中运行：
 
 ```powershell
+cd backend
 uv sync
 
 $env:OPENAI_API_BASE = "https://dashscope.aliyuncs.com/compatible-mode/v1"
@@ -27,19 +26,10 @@ $env:LITELLM_MODEL = "openai/glm-5.1"
 uv run python -m chat_ui_builder
 ```
 
-服务默认监听 `http://localhost:8010`。
+服务默认监听 `http://localhost:8010`，接口文档位于 `http://localhost:8010/docs`。
 
-## 接口
+后端详细说明见 [backend/README.md](backend/README.md)。
 
-- `GET /health`
-- `POST /api/chat/stream`
-- `WS /api/chat/ws/stream`
-- `WS /ws/debug`
+## 前端
 
-HTTP 流式接口返回 `application/x-ndjson`。
-
-## 测试
-
-```powershell
-uv run --with pytest pytest -q
-```
+前端代码独立维护在 `frontend/`，详细说明见 [frontend/README.md](frontend/README.md)。
