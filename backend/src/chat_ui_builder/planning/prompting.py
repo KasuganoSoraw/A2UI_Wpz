@@ -4,97 +4,97 @@ import json
 
 PLANNING_DELTA_CONTRACT = [
     {
-        'event': 'init_plan',
-        'surface_id': 'string, optional, default main',
-        'title': 'string',
-        'summary': 'optional string',
-        'theme': {'primaryColor': 'optional #RRGGBB string', 'font': 'optional string'},
+        "event": "init_plan",
+        "surface_id": "string, optional, default main",
+        "title": "string",
+        "summary": "optional string",
+        "theme": {"primaryColor": "optional #RRGGBB string", "font": "optional string"},
     },
     {
-        'event': 'add_region',
-        'id': 'string',
-        'role': 'hero | summary | details | workflow | list | supporting',
-        'title': 'optional string',
-        'description': 'optional string',
-        'presentation': {
-            'variant': 'optional standard | timeline (only list role supports timeline in current stage)'
+        "event": "add_region",
+        "id": "string",
+        "role": "hero | summary | details | workflow | list | supporting",
+        "title": "optional string",
+        "description": "optional string",
+        "presentation": {
+            "variant": "optional standard | timeline (only list role supports timeline in current stage)"
         },
     },
     {
-        'event': 'add_region_text',
-        'id': 'string',
-        'region_id': 'string',
-        'text': 'string',
-        'usage_hint': 'h1 | h2 | h3 | body | caption | warning | code_echo',
+        "event": "add_region_text",
+        "id": "string",
+        "region_id": "string",
+        "text": "string",
+        "usage_hint": "h1 | h2 | h3 | body | caption | warning | code_echo",
     },
     {
-        'event': 'add_region_fact',
-        'id': 'string',
-        'region_id': 'string',
-        'label': 'string',
-        'value': 'string',
+        "event": "add_region_fact",
+        "id": "string",
+        "region_id": "string",
+        "label": "string",
+        "value": "string",
     },
     {
-        'event': 'add_region_list_item',
-        'id': 'string',
-        'region_id': 'string',
-        'title': 'string',
-        'detail': 'optional string',
-        'title_usage_hint': 'optional h1 | h2 | h3 | body | caption | warning',
-        'detail_usage_hint': 'optional h1 | h2 | h3 | body | caption | warning',
+        "event": "add_region_list_item",
+        "id": "string",
+        "region_id": "string",
+        "title": "string",
+        "detail": "optional string",
+        "title_usage_hint": "optional h1 | h2 | h3 | body | caption | warning",
+        "detail_usage_hint": "optional h1 | h2 | h3 | body | caption | warning",
     },
     {
-        'event': 'add_region_table',
-        'id': 'string',
-        'region_id': 'string',
-        'columns': 'list of {key,label,width?,align?(left|center|right),ellipsis?}',
-        'rows': 'list of row objects keyed by column key; each cell may be a primitive value or {value, visual_weight?}',
-        'title': 'optional string',
-        'row_key': 'optional string',
-        'striped': 'optional boolean',
-        'bordered': 'optional boolean',
+        "event": "add_region_table",
+        "id": "string",
+        "region_id": "string",
+        "columns": "list of {key,label,width?,align?(left|center|right),ellipsis?}",
+        "rows": "list of row objects keyed by column key; each cell may be a primitive value or {value, visual_weight?}",
+        "title": "optional string",
+        "row_key": "optional string",
+        "striped": "optional boolean",
+        "bordered": "optional boolean",
     },
     {
-        'event': 'add_region_line_chart',
-        'id': 'string',
-        'region_id': 'string',
-        'title': 'optional string',
-        'width': 'optional string, e.g. 100% | 600px',
-        'settings': {
-            'dimension': 'string',
-            'xTitle': 'optional string',
-            'yTitle': 'optional string',
-            'metrics': 'list[string]',
-            'markPoint': 'optional boolean',
+        "event": "add_region_line_chart",
+        "id": "string",
+        "region_id": "string",
+        "title": "optional string",
+        "width": "optional string, e.g. 100% | 600px",
+        "settings": {
+            "dimension": "string",
+            "xTitle": "optional string",
+            "yTitle": "optional string",
+            "metrics": "list[string]",
+            "markPoint": "optional boolean",
         },
-        'chart_data': 'list of row objects; each row contains the dimension field and metric fields',
+        "chart_data": "list of row objects; each row contains the dimension field and metric fields",
     },
     {
-        'event': 'add_region_pie_chart',
-        'id': 'string',
-        'region_id': 'string',
-        'title': 'optional string',
-        'width': 'optional string, e.g. 1000px | 100%',
-        'settings': 'optional object',
-        'chart_data': 'list of {data: list of {value:number,name:string,selected?}, radius?: string}',
+        "event": "add_region_pie_chart",
+        "id": "string",
+        "region_id": "string",
+        "title": "optional string",
+        "width": "optional string, e.g. 1000px | 100%",
+        "settings": "optional object",
+        "chart_data": "list of {data: list of {value:number,name:string,selected?}, radius?: string}",
     },
     {
-        'event': 'add_region_topology',
-        'id': 'string',
-        'region_id': 'string',
-        'title': 'optional string',
-        'objects': 'list of {id, standardName, viewGroup}',
-        'edges': 'list of {bizSemanticRel:(relatedto|affect), srcVid, dstVid, function:{description}}',
+        "event": "add_region_topology",
+        "id": "string",
+        "region_id": "string",
+        "title": "optional string",
+        "objects": "list of {id, standardName, viewGroup}",
+        "edges": "list of {bizSemanticRel:(relatedto|affect), srcVid, dstVid, function:{description}}",
     },
     {
-        'event': 'add_region_mermaid',
-        'id': 'string',
-        'region_id': 'string',
-        'title': 'optional string',
-        'diagram_type': 'flowchart | sequenceDiagram | stateDiagram-v2 | erDiagram | classDiagram',
-        'definition': 'string, mermaid source',
+        "event": "add_region_mermaid",
+        "id": "string",
+        "region_id": "string",
+        "title": "optional string",
+        "diagram_type": "flowchart | sequenceDiagram | stateDiagram-v2 | erDiagram | classDiagram",
+        "definition": "string, mermaid source",
     },
-    {'event': 'finalize_plan'},
+    {"event": "finalize_plan"},
 ]
 
 SYSTEM_PROMPT = f"""你是一个 A2UI 页面规划事件生成器，定位是展示编排层（display orchestrator）。
@@ -235,20 +235,20 @@ def build_messages(
     source_data: object | None = None,
     user_query: str | None = None,
 ) -> list[dict[str, str]]:
-  resolved_source_data = source_data
-  if resolved_source_data is None:
-    resolved_source_data = {'message': user_message or ''}
+    resolved_source_data = source_data
+    if resolved_source_data is None:
+        resolved_source_data = {"message": user_message or ""}
 
-  resolved_user_query = user_query
-  if resolved_user_query is None and user_message:
-    resolved_user_query = user_message
+    resolved_user_query = user_query
+    if resolved_user_query is None and user_message:
+        resolved_user_query = user_message
 
-  planner_input = {
-      'source_data': resolved_source_data,
-      'user_query': resolved_user_query,
-      'display_goal': '忠实展示上游结果，禁止编造新增业务结论',
-  }
-  return [
-      {'role': 'system', 'content': SYSTEM_PROMPT},
-      {'role': 'user', 'content': json.dumps(planner_input, ensure_ascii=False)},
-  ]
+    planner_input = {
+        "source_data": resolved_source_data,
+        "user_query": resolved_user_query,
+        "display_goal": "忠实展示上游结果，禁止编造新增业务结论",
+    }
+    return [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": json.dumps(planner_input, ensure_ascii=False)},
+    ]

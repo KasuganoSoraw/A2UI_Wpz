@@ -77,9 +77,9 @@ set_final_summary_facts
 
 
 def build_stream_event_messages(payload: dict[str, Any]) -> list[dict[str, str]]:
-  """构造单阶段事件生成消息（强调仅响应本轮 changes）。"""
+    """构造单阶段事件生成消息（强调仅响应本轮 changes）。"""
 
-  return [
-      {'role': 'system', 'content': STREAM_EVENT_SYSTEM_PROMPT},
-      {'role': 'user', 'content': json.dumps(payload, ensure_ascii=False)},
-  ]
+    return [
+        {"role": "system", "content": STREAM_EVENT_SYSTEM_PROMPT},
+        {"role": "user", "content": json.dumps(payload, ensure_ascii=False)},
+    ]
